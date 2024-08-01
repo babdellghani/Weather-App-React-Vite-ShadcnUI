@@ -1,0 +1,39 @@
+.left,
+.right {
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.3);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    background-image: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.3),
+  );
+}
+
+.daily {
+    background-color: rgba(255, 255, 255, 0.3);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.hourly {
+    background-color: rgba(255, 255, 255, 0.3);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.active {
+    background-color: white !important;
+    color: black !important;
+}
