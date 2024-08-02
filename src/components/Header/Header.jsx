@@ -38,7 +38,7 @@ function Header() {
           <button
             onClick={getGeoLocation}
             className={`${styles.location} rounded-lg p-2 ${
-              isCurrentLocation ? "text-gray-500" : "cursor-pointer text-white"
+              isCurrentLocation ? "text-gray-700" : "cursor-pointer text-white"
             }`}
             disabled={isCurrentLocation === true}
           >
