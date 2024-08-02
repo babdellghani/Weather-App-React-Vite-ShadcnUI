@@ -13,9 +13,17 @@ import {
 function WeatherSlider() {
   const [date, setDate] = useState("daily");
   const weather = useSelector((state) => state.weather.data);
+  const currentTime = new Date(weather.location.localtime).getTime();
+
+  const hourWeather = weather?.forecast?.forecastday?.map((day) => {
+    return day?.hour;
+  });
   return (
     <div className="w-full pb-10 px-4 flex flex-col justify-center items-center">
-      <Carousel className="w-full flex flex-col justify-center items-center gap-4" opts={{ align: "start", loop: true }}>
+      <Carousel
+        className="w-full flex flex-col justify-center items-center gap-4"
+        opts={{ align: "start", loop: true }}
+      >
         <div className="slider w-full text-white flex justify-between items-center gap-4">
           <div className="group-buttons flex justify-center items-center">
             <button
@@ -49,7 +57,10 @@ function WeatherSlider() {
             <CarouselContent>
               {weather?.forecast?.forecastday?.map((day, index) => {
                 return (
-                  <CarouselItem key={index} className="basis-3/6 md:basis-2/6 lg:basis-1/5">
+                  <CarouselItem
+                    key={index}
+                    className="basis-3/6 md:basis-2/6 lg:basis-1/5"
+                  >
                     <WeatherCart day={day} date={date} />
                   </CarouselItem>
                 );
@@ -59,13 +70,20 @@ function WeatherSlider() {
 
           {date === "hourly" && (
             <CarouselContent>
-              {weather?.forecast?.forecastday[0]?.hour?.map((day, index) => {
-                return (
-                  <CarouselItem key={index} className="basis-2/6 md:basis-1/6">
-                    <WeatherCart day={day} date={date} />
-                  </CarouselItem>
-                );
-              })}
+              {hourWeather?.map((day) =>
+                day
+                  ?.filter((day) => new Date(day.time).getTime() >= currentTime)
+                  ?.map((day, index) => {
+                    return (
+                      <CarouselItem
+                        key={index}
+                        className="basis-3/6 md:basis-2/6 lg:basis-1/5"
+                      >
+                        <WeatherCart day={day} date={date} />
+                      </CarouselItem>
+                    );
+                  })
+              )}
             </CarouselContent>
           )}
         </div>

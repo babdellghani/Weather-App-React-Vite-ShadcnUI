@@ -8,7 +8,10 @@ function WeatherCart({ day, date }) {
 
     // Check if the date is Hourly
     if (date === "hourly") {
-      // Get hours and minutes
+      // Get Month Long and Date
+      const month = dateFormat.toLocaleString('default', { month: 'long' });
+      const date = dateFormat.getDate();
+      // Get hours and minutes 
       let hours = dateFormat.getHours();
       let minutes = dateFormat.getMinutes();
 
@@ -23,7 +26,7 @@ function WeatherCart({ day, date }) {
       minutes = minutes < 10 ? "0" + minutes : minutes;
 
       // Return the formatted time
-      return hours + ":" + minutes + " " + ampm;
+      return date + " " + month + " - " + hours + ":" + minutes + " " + ampm + " "; 
     }
 
     // Check if the date is today
