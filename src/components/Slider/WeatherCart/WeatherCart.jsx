@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 
 function WeatherCart({ day, date }) {
-
   const formatDate = (dateString) => {
     const dateFormat = new Date(dateString);
     const today = new Date();
@@ -9,9 +8,9 @@ function WeatherCart({ day, date }) {
     // Check if the date is Hourly
     if (date === "hourly") {
       // Get Month Long and Date
-      const month = dateFormat.toLocaleString('default', { month: 'long' });
+      const month = dateFormat.toLocaleString("default", { month: "long" });
       const date = dateFormat.getDate();
-      // Get hours and minutes 
+      // Get hours and minutes
       let hours = dateFormat.getHours();
       let minutes = dateFormat.getMinutes();
 
@@ -26,7 +25,9 @@ function WeatherCart({ day, date }) {
       minutes = minutes < 10 ? "0" + minutes : minutes;
 
       // Return the formatted time
-      return date + " " + month + " - " + hours + ":" + minutes + " " + ampm + " "; 
+      return (
+        date + " " + month + " - " + hours + ":" + minutes + " " + ampm + " "
+      );
     }
 
     // Check if the date is today

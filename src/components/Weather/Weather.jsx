@@ -1,13 +1,15 @@
-import { Droplets, Wind, Sun, Waves } from "lucide-react";
+import { Droplets, Wind, Sun, Waves, ArrowRight, ChevronRight } from "lucide-react";
 import styles from "./Weather.module.scss";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 function Weather() {
   const weather = useSelector((state) => state.weather.data);
   const [time, setTime] = useState(
     new Date(weather?.location?.localtime).getTime()
   );
+  const [icon, setIcon] = useState(false);
 
   useEffect(() => {
     setTime(new Date(weather?.location?.localtime).getTime());
@@ -31,7 +33,7 @@ function Weather() {
   });
   return (
     <div
-      className={`${styles.weather} flex flex-col gap-4 justify-center items-center md:flex-row md:justify-between w-full rounded-lg text-white px-16 py-4`}
+      className={`${styles.weather} flex flex-col gap-4 justify-center items-center md:flex-row md:justify-around w-full rounded-lg text-white px-16 py-4`}
     >
       <div className="main text-center flex flex-col gap-4">
         <div className="icon flex place-content-center">
@@ -42,7 +44,7 @@ function Weather() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <div className="text-4xl font-medium">
+          <div className="text-4xl font-medium capitalize">
             {weather?.current?.condition?.text}
           </div>
           <div className="text-sm font-medium">
@@ -76,7 +78,7 @@ function Weather() {
           <div className="text flex flex-col gap-1">
             <h4 className="text-sm font-semibold">Precipition</h4>
             <p className="text-3xl font-bold">
-              {weather?.current?.pressure_in} %
+              {weather?.current?.precip_in} %
             </p>
           </div>
         </div>
@@ -87,7 +89,7 @@ function Weather() {
           <div className="text flex flex-col gap-1">
             <h4 className="text-sm font-semibold">Wind</h4>
             <p className="text-3xl font-bold">
-              {weather?.current?.wind_kph} km
+              {weather?.current?.wind_kph} Km
             </p>
           </div>
         </div>
@@ -99,6 +101,20 @@ function Weather() {
             <h4 className="text-sm font-semibold">UV Index</h4>
             <p className="text-3xl font-bold">{weather?.current?.uv}</p>
           </div>
+        </div>
+        <div>
+          <Link to={`/details`}
+            onMouseOver={() => setIcon(true)}
+            onMouseOut={() => setIcon(false)}
+            className={`${styles.btn} flex justify-center items-center gap-2 px-10 py-2`}
+          >
+            <p className="text-sm font-semibold">More Details</p>
+            {icon ? (
+              <ArrowRight size={20} strokeWidth={3} />
+            ) : (
+              <ChevronRight size={20} strokeWidth={3} />
+            )}
+          </Link>
         </div>
       </div>
     </div>

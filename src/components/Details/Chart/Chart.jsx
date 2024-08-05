@@ -1,0 +1,255 @@
+import * as React from "react";
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import PropTypes from "prop-types";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+const Chart = ({ weatherData = { hour: [] } }) => {
+  const [typeWeather, setTypeWeather] = React.useState("temp");
+  const filteredHours = weatherData?.hour?.filter((hour) => {
+    const time = hour.time.slice(11, 16);
+    return [
+      "00:00",
+      "03:00",
+      "06:00",
+      "09:00",
+      "12:00",
+      "15:00",
+      "18:00",
+      "21:00",
+      "23:00",
+    ].includes(time);
+  });
+
+  const chartData = [
+    ...filteredHours.map((hour) => ({
+      date: hour.time.slice(11, 16),
+      desktop:
+        typeWeather === "temp"
+          ? hour.temp_c
+          : typeWeather === "tempPrec"
+          ? hour.heatindex_c
+          : typeWeather === "chance"
+          ? hour.chance_of_rain
+          : typeWeather === "precip"
+          ? hour.precip_mm
+          : typeWeather === "wind"
+          ? hour.wind_mph
+          : typeWeather === "vis"
+          ? hour.vis_miles
+          : typeWeather === "hum"
+          ? hour.humidity
+          : typeWeather === "pressure"
+          ? hour.pressure_in
+          : hour.temp_f,
+      mobile:
+        typeWeather === "temp"
+          ? hour.feelslike_c
+          : typeWeather === "tempPrec"
+          ? hour.windchill_c
+          : typeWeather === "chance"
+          ? hour.chance_of_snow
+          : typeWeather === "precip"
+          ? hour.snow_cm
+          : typeWeather === "wind"
+          ? hour.gust_mph
+          : typeWeather === "vis"
+          ? hour.cloud
+          : typeWeather === "hum"
+          ? hour.dewpoint_c
+          : typeWeather === "pressure"
+          ? hour.uv
+          : hour.temp_c,
+    })),
+  ];
+
+  const chartConfig = {
+    visitors: {
+      label: "Visitors",
+    },
+    desktop: {
+      label:
+        typeWeather === "temp"
+          ? "Temp in °C"
+          : typeWeather === "tempPrec"
+          ? "Heat index in °C"
+          : typeWeather === "chance"
+          ? "Chance of rain"
+          : typeWeather === "precip"
+          ? "Precip in mm"
+          : typeWeather === "wind"
+          ? "Wind in mph"
+          : typeWeather === "vis"
+          ? "Vis in miles"
+          : typeWeather === "hum"
+          ? "Humidity in %"
+          : typeWeather === "pressure"
+          ? "Pressure in in"
+          : "Temp in °C",
+      color: "hsl(var(--chart-1))",
+    },
+    mobile: {
+      label:
+        typeWeather === "temp"
+          ? "Feels like in °C"
+          : typeWeather === "tempPrec"
+          ? "Wind chill in °C"
+          : typeWeather === "chance"
+          ? "Chance of snow"
+          : typeWeather === "precip"
+          ? "Snow in cm"
+          : typeWeather === "wind"
+          ? "Gust in mph"
+          : typeWeather === "vis"
+          ? "Cloud in %"
+          : typeWeather === "hum"
+          ? "Dew point in °C"
+          : typeWeather === "pressure"
+          ? "UV"
+          : "Feels like in °C",
+      color: "hsl(var(--chart-2))",
+    },
+  };
+
+
+  const filteredData = chartData;
+
+  return (
+    <Card className="w-full">
+      <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
+        <div className="flex items-center justify-between gap-2">
+            <div>
+                <img src={weatherData?.day?.condition?.icon} className="w-10" alt="weather" />
+            </div>
+        <div className="grid flex-1 gap-1 text-center sm:text-left">
+          <CardTitle>{new Date(weatherData?.date).toDateString()}</CardTitle>
+          <CardDescription>
+            {weatherData?.day?.condition?.text}
+          </CardDescription>
+        </div></div>
+        <Select value={typeWeather} onValueChange={setTypeWeather}>
+          <SelectTrigger
+            className="w-[160px] rounded-lg sm:ml-auto"
+            aria-label="Select a value"
+          >
+            <SelectValue placeholder="Last 3 months" />
+          </SelectTrigger>
+          <SelectContent className="rounded-xl">
+            <SelectItem value="temp" className="rounded-lg">
+              Temperature
+            </SelectItem>
+            <SelectItem value="tempPrec" className="rounded-lg">
+              Perceived Temperature
+            </SelectItem>
+            <SelectItem value="wind" className="rounded-lg">
+              Wind
+            </SelectItem>
+            <SelectItem value="precip" className="rounded-lg">
+              Precipitation
+            </SelectItem>
+            <SelectItem value="hum" className="rounded-lg">
+              Humidity
+            </SelectItem>
+            <SelectItem value="vis" className="rounded-lg">
+              Visibility
+            </SelectItem>
+            <SelectItem value="pressure" className="rounded-lg">
+              Pressure & UV
+            </SelectItem>
+            <SelectItem value="chance" className="rounded-lg">
+              Chance of rain or snow
+            </SelectItem>
+          </SelectContent>
+        </Select>
+      </CardHeader>
+      <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
+        <ChartContainer
+          config={chartConfig}
+          className="aspect-auto h-[250px] w-full"
+        >
+          <AreaChart data={filteredData}>
+            <defs>
+              <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
+                <stop
+                  offset="5%"
+                  stopColor="var(--color-desktop)"
+                  stopOpacity={0.8}
+                />
+                <stop
+                  offset="95%"
+                  stopColor="var(--color-desktop)"
+                  stopOpacity={0.1}
+                />
+              </linearGradient>
+              <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
+                <stop
+                  offset="5%"
+                  stopColor="var(--color-mobile)"
+                  stopOpacity={0.8}
+                />
+                <stop
+                  offset="95%"
+                  stopColor="var(--color-mobile)"
+                  stopOpacity={0.1}
+                />
+              </linearGradient>
+            </defs>
+            <CartesianGrid vertical={false} />
+            <XAxis
+              dataKey="date"
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              minTickGap={32}
+            />
+            <ChartTooltip
+              cursor={true}
+              content={<ChartTooltipContent indicator="dot" />}
+            />
+            <Area
+              dataKey="mobile"
+              type="natural"
+              fill="url(#fillMobile)"
+              stroke="var(--color-mobile)"
+              stackId="a"
+            />
+            <Area
+              dataKey="desktop"
+              type="natural"
+              fill="url(#fillDesktop)"
+              stroke="var(--color-desktop)"
+              stackId="a"
+            />
+            <ChartLegend content={<ChartLegendContent />} />
+          </AreaChart>
+        </ChartContainer>
+      </CardContent>
+    </Card>
+  );
+};
+
+Chart.propTypes = {
+  weatherData: PropTypes.object.isRequired,
+};
+
+export default Chart;

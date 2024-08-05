@@ -83,9 +83,7 @@ function SearchBar({ geoLocation, resetCurrentLocation }) {
             aria-expanded={open}
             className={`${styles.button} w-[300px] justify-between truncate ...`}
           >
-            {value
-              ? value
-              : "Select Your City"}
+            {value ? value : "Select Your City"}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
