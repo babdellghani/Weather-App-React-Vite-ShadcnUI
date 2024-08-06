@@ -14,7 +14,16 @@ import Sunrise from "../../../assets/img/sunrise.png";
 import Sunset from "../../../assets/img/sunset.png";
 import Moonrise from "../../../assets/img/moonrise.png";
 import Moonset from "../../../assets/img/moonset.png";
-import { CloudFog, CloudRain, CloudSnow, Droplets, Rainbow, Snowflake, View, Waves } from "lucide-react";
+import {
+  CloudFog,
+  CloudRain,
+  CloudSnow,
+  Droplets,
+  Rainbow,
+  Snowflake,
+  View,
+  Waves,
+} from "lucide-react";
 
 function DetailsSlider() {
   const [documentWidth, setDocumentWidth] = useState(window.innerWidth);

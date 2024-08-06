@@ -1,4 +1,11 @@
-import { Droplets, Wind, Sun, Waves, ArrowRight, ChevronRight } from "lucide-react";
+import {
+  Droplets,
+  Wind,
+  Sun,
+  Waves,
+  ArrowRight,
+  ChevronRight,
+} from "lucide-react";
 import styles from "./Weather.module.scss";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -103,7 +110,8 @@ function Weather() {
           </div>
         </div>
         <div>
-          <Link to={`/details`}
+          <Link
+            to={`/details`}
             onMouseOver={() => setIcon(true)}
             onMouseOut={() => setIcon(false)}
             className={`${styles.btn} flex justify-center items-center gap-2 px-10 py-2`}

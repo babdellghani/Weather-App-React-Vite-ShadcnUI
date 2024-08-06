@@ -131,22 +131,26 @@ const Chart = ({ weatherData = { hour: [] } }) => {
     },
   };
 
-
   const filteredData = chartData;
 
   return (
     <Card className="w-full">
       <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
         <div className="flex items-center justify-between gap-2">
-            <div>
-                <img src={weatherData?.day?.condition?.icon} className="w-10" alt="weather" />
-            </div>
-        <div className="grid flex-1 gap-1 text-center sm:text-left">
-          <CardTitle>{new Date(weatherData?.date).toDateString()}</CardTitle>
-          <CardDescription>
-            {weatherData?.day?.condition?.text}
-          </CardDescription>
-        </div></div>
+          <div>
+            <img
+              src={weatherData?.day?.condition?.icon}
+              className="w-10"
+              alt="weather"
+            />
+          </div>
+          <div className="grid flex-1 gap-1 text-center sm:text-left">
+            <CardTitle>{new Date(weatherData?.date).toDateString()}</CardTitle>
+            <CardDescription>
+              {weatherData?.day?.condition?.text}
+            </CardDescription>
+          </div>
+        </div>
         <Select value={typeWeather} onValueChange={setTypeWeather}>
           <SelectTrigger
             className="w-[160px] rounded-lg sm:ml-auto"
