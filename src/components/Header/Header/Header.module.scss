@@ -5,6 +5,7 @@
   backdrop-filter: blur(40px);
   border: none !important;
   position: relative;
+  z-index: 100;
 }
 
 .location[disabled][title="Location not available"]::after {

@@ -45,6 +45,9 @@ function DetailsSlider() {
     setSelectedIndex(index);
   };
 
+  const { typeTemp, typeWind, typePrecip, typeVisibility } =
+    useSelector((state) => state.weather);
+
   return (
     <div className="w-full pb-10 px-4 flex flex-col sm:flex-row justify-center items-start sm:items-center">
       <div className="w-screen max-w-full sm:max-w-fit sm:w-fit pb-10 px-4 flex flex-col justify-center items-center">
@@ -102,16 +105,16 @@ function DetailsSlider() {
               </div>
             </div>
             <div className="text-5xl font-bold truncate">
-              {weatherData?.day?.avgtemp_c} °C
+              {typeTemp === "C" ? weatherData?.day?.avgtemp_c + " °C" : weatherData?.day?.avgtemp_f + " °F"}
             </div>
             <div className="text-base font-semibold flex items-center justify-center gap-2">
               <span className="font-medium text-xl">
                 <span className="text-blue-400">
-                  {weatherData?.day?.mintemp_c} °C
+                  {typeTemp === "C" ? weatherData?.day?.mintemp_c + " °C" : weatherData?.day?.mintemp_f + " °F"}
                 </span>
                 <span> / </span>
                 <span className="text-red-400">
-                  {weatherData?.day?.maxtemp_c} °C
+                  {typeTemp === "C" ? weatherData?.day?.maxtemp_c + " °C" : weatherData?.day?.maxtemp_f + " °F"}
                 </span>
               </span>
             </div>
@@ -124,7 +127,7 @@ function DetailsSlider() {
               <div className="text flex flex-col gap-1">
                 <h4 className="text-sm font-semibold">Max Wind</h4>
                 <p className="text-3xl font-bold truncate">
-                  {weatherData?.day?.maxwind_mph} Mph
+                  {typeWind === "Kph" ? weatherData?.day?.maxwind_kph + " Kph" : weatherData?.day?.maxwind_mph + " Mph"}
                 </p>
               </div>
             </div>
@@ -135,7 +138,7 @@ function DetailsSlider() {
               <div className="text flex flex-col gap-1">
                 <h4 className="text-sm font-semibold">Total Precipition</h4>
                 <p className="text-3xl font-bold truncate">
-                  {weatherData?.day?.totalprecip_in} In
+                  {typePrecip === "Mm" ? weatherData?.day?.totalprecip_mm + " Mm" : weatherData?.day?.totalprecip_in + " In"}
                 </p>
               </div>
             </div>
@@ -157,7 +160,7 @@ function DetailsSlider() {
               <div className="text flex flex-col gap-1">
                 <h4 className="text-sm font-semibold">Average Visibility</h4>
                 <p className="text-3xl font-bold truncate">
-                  {weatherData?.day?.avgvis_miles} Miles
+                  {typeVisibility === "Km" ? weatherData?.day?.avgvis_km + " Km" : weatherData?.day?.avgvis_miles + " Miles"}
                 </p>
               </div>
             </div>
@@ -216,7 +219,7 @@ function DetailsSlider() {
             </div>
             <div className="details">
               <h2 className="text-xl font-semibold">Sunrise</h2>
-              <h1 className="text-3xl font-bold">
+              <h1 className="text-3xl font-bold truncate">
                 {weatherData?.astro?.sunrise}
               </h1>
             </div>
@@ -229,7 +232,7 @@ function DetailsSlider() {
             </div>
             <div className="details">
               <h2 className="text-xl font-semibold">Sunset</h2>
-              <h1 className="text-3xl font-bold">
+              <h1 className="text-3xl font-bold truncate">
                 {weatherData?.astro?.sunset}
               </h1>
             </div>
@@ -242,7 +245,7 @@ function DetailsSlider() {
             </div>
             <div className="details">
               <h2 className="text-xl font-semibold">Moonrise</h2>
-              <h1 className="text-3xl font-bold">
+              <h1 className="text-3xl font-bold truncate">
                 {weatherData?.astro?.moonrise}
               </h1>
             </div>
@@ -255,7 +258,7 @@ function DetailsSlider() {
             </div>
             <div className="details">
               <h2 className="text-xl font-semibold">Moonset</h2>
-              <h1 className="text-3xl font-bold">
+              <h1 className="text-3xl font-bold truncate">
                 {weatherData?.astro?.moonset}
               </h1>
             </div>

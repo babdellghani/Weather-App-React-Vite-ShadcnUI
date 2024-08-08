@@ -1,6 +1,6 @@
 import styles from "./App.module.scss";
 import { useSelector } from "react-redux";
-import Header from "./components/Header/Header";
+import Header from "./components/Header/Header/Header";
 import Wallpaper from "./components/Wallpaper/Wallpaper";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Details from "./pages/Details";

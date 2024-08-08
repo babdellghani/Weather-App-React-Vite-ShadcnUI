@@ -3,6 +3,7 @@ import SearchBar from "../SearchBar/SearchBar";
 import styles from "./Header.module.scss";
 import { House, MapPin, MapPinCheck, MapPinX } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import Settings from "../Settings/Settings";
 
 function Header() {
   const [geoLocation, setGeoLocation] = useState();
@@ -55,7 +56,7 @@ function Header() {
           <button
             onClick={getGeoLocation}
             className={`${styles.location} rounded-lg p-2 ${
-              isCurrentLocation ? "text-gray-700" : "cursor-pointer text-white"
+              isCurrentLocation ? "text-green-500" : "cursor-pointer text-white"
             }`}
             disabled={isCurrentLocation === true}
           >
@@ -64,13 +65,15 @@ function Header() {
         ) : (
           <button
             onClick={getGeoLocation}
-            className={`${styles.location} rounded-lg p-2 text-gray-500`}
+            className={`${styles.location} rounded-lg p-2 text-gray-400`}
             disabled
             title="Location not available"
           >
             <MapPinX />
           </button>
         )}
+
+        <Settings />
       </div>
     </div>
   );

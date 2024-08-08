@@ -17,6 +17,7 @@ import styles from "./DetailsWeather.module.scss";
 import { useEffect, useState } from "react";
 // import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
 function DetailsWeather({ weather }) {
   // const weather = useSelector((state) => state.weather.data);
@@ -44,6 +45,9 @@ function DetailsWeather({ weather }) {
     second: "numeric",
     hour12: true,
   });
+
+  const { typeTemp, typeWind, typePressure, typePrecip, typeVisibility } =
+    useSelector((state) => state.weather);
   return (
     <div
       className={`${styles.weather} flex flex-col gap-4 justify-center items-center lg:flex-row lg:justify-around w-full rounded-lg text-white px-16 py-4`}
@@ -65,11 +69,11 @@ function DetailsWeather({ weather }) {
           </div>
         </div>
         <div className="text-5xl font-bold truncate">
-          {weather?.current?.temp_c} °C
+          {typeTemp === "C" ? weather?.current?.temp_c + " °C" : weather?.current?.temp_f + " °F"}
         </div>
         <div className="text-base font-semibold flex items-center justify-center gap-2">
           <span className="text-orange-400 font-bold text-3xl">
-            {weather?.current?.temp_f} °F
+            {typeTemp === "C" ? weather?.current?.feelslike_c + " °C" : weather?.current?.feelslike_f + " °F"}
           </span>
         </div>
         <div className="text-base font-semibold flex items-center justify-center gap-2">
@@ -87,10 +91,7 @@ function DetailsWeather({ weather }) {
             <div className="text flex basis-1/2 flex-col gap-1">
               <h4 className="text-sm font-semibold truncate">Pressure</h4>
               <p className="text-3xl font-bold truncate">
-                {weather?.current?.pressure_in} %
-              </p>
-              <p className="text-xl font-bold truncate">
-                {weather?.current?.pressure_mb} Mb
+                {typePressure === "In" ? weather?.current?.pressure_in + " In" : weather?.current?.pressure_mb + " Mb"}
               </p>
             </div>
           </div>
@@ -101,10 +102,7 @@ function DetailsWeather({ weather }) {
             <div className="text flex basis-1/2 flex-col gap-1">
               <h4 className="text-sm font-semibold truncate">Wind</h4>
               <p className="text-3xl font-bold truncate">
-                {weather?.current?.wind_kph} Km
-              </p>
-              <p className="text-xl font-bold truncate">
-                {weather?.current?.wind_mph} Mph
+                {typeWind === "Mph" ? weather?.current?.wind_mph + " Mph" : weather?.current?.wind_kph + " Kph"}
               </p>
             </div>
           </div>
@@ -115,10 +113,7 @@ function DetailsWeather({ weather }) {
             <div className="text flex basis-1/2 flex-col gap-1">
               <h4 className="text-sm font-semibold truncate">Fells Like</h4>
               <p className="text-3xl font-bold truncate">
-                {weather?.current?.feelslike_c} °C
-              </p>
-              <p className="text-xl font-bold truncate">
-                {weather?.current?.feelslike_f} °F
+                {typeTemp === "C" ? weather?.current?.feelslike_c + " °C" : weather?.current?.feelslike_f + " °F"}
               </p>
             </div>
           </div>
@@ -133,10 +128,7 @@ function DetailsWeather({ weather }) {
             <div className="text flex basis-1/2 flex-col gap-1">
               <h4 className="text-sm font-semibold truncate">Precipition</h4>
               <p className="text-3xl font-bold truncate">
-                {weather?.current?.precip_mm} Mm
-              </p>
-              <p className="text-xl font-bold truncate">
-                {weather?.current?.precip_in} In
+                {typePrecip === "In" ? weather?.current?.precip_in + " In" : weather?.current?.precip_mm + " Mm"}
               </p>
             </div>
           </div>
@@ -147,10 +139,7 @@ function DetailsWeather({ weather }) {
             <div className="text flex basis-1/2 flex-col gap-1">
               <h4 className="text-sm font-semibold truncate">Wind Degree</h4>
               <p className="text-3xl font-bold truncate">
-                {weather?.current?.wind_degree} °
-              </p>
-              <p className="text-xl font-bold truncate uppercase">
-                {weather?.current?.wind_dir}
+                {weather?.current?.wind_degree} °{weather?.current?.wind_dir}
               </p>
             </div>
           </div>
@@ -161,10 +150,7 @@ function DetailsWeather({ weather }) {
             <div className="text flex basis-1/2 flex-col gap-1">
               <h4 className="text-sm font-semibold truncate">Wind Chill</h4>
               <p className="text-3xl font-bold truncate">
-                {weather?.current?.windchill_c} °C
-              </p>
-              <p className="text-xl font-bold truncate">
-                {weather?.current?.windchill_f} °F
+                {typeTemp === "C" ? weather?.current?.windchill_c + " °C" : weather?.current?.windchill_f + " °F"}
               </p>
             </div>
           </div>
@@ -179,10 +165,7 @@ function DetailsWeather({ weather }) {
             <div className="text flex basis-1/2 flex-col gap-1">
               <h4 className="text-sm font-semibold">Visibility</h4>
               <p className="text-3xl font-bold truncate">
-                {weather?.current?.vis_km} km
-              </p>
-              <p className="text-xl font-bold truncate">
-                {weather?.current?.vis_miles} mi
+                {typeVisibility === "Miles" ? weather?.current?.vis_miles + " Miles" : weather?.current?.vis_km + " Km"}
               </p>
             </div>
           </div>
@@ -194,10 +177,7 @@ function DetailsWeather({ weather }) {
             <div className="text flex basis-1/2 flex-col gap-1">
               <h4 className="text-sm font-semibold truncate">Heat Index</h4>
               <p className="text-3xl font-bold truncate">
-                {weather?.current?.heatindex_c} °C
-              </p>
-              <p className="text-xl font-bold truncate">
-                {weather?.current?.heatindex_f} °F
+                {typeTemp === "C" ? weather?.current?.heatindex_c + " °C" : weather?.current?.heatindex_f + " °F"}
               </p>
             </div>
           </div>
@@ -224,10 +204,7 @@ function DetailsWeather({ weather }) {
             <div className="text flex basis-1/2 flex-col gap-1">
               <h4 className="text-sm font-semibold">Gust</h4>
               <p className="text-3xl font-bold truncate">
-                {weather?.current?.gust_kph} Km
-              </p>
-              <p className="text-xl font-bold truncate">
-                {weather?.current?.gust_mph} Mph
+                {typeWind === "Mph" ? weather?.current?.gust_mph + " Mph" : weather?.current?.gust_kph + " Kph"}
               </p>
             </div>
           </div>
@@ -239,10 +216,7 @@ function DetailsWeather({ weather }) {
             <div className="text flex basis-1/2 flex-col gap-1">
               <h4 className="text-sm font-semibold truncate">Dew Point</h4>
               <p className="text-3xl font-bold truncate">
-                {weather?.current?.dewpoint_c} °C
-              </p>
-              <p className="text-xl font-bold truncate">
-                {weather?.current?.dewpoint_f} °F
+                {typeTemp === "C" ? weather?.current?.dewpoint_c + " °C" : weather?.current?.dewpoint_f + " °F"}
               </p>
             </div>
           </div>

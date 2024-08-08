@@ -23,6 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useSelector } from "react-redux";
 
 const Chart = ({ weatherData = { hour: [] } }) => {
   const [typeWeather, setTypeWeather] = React.useState("temp");
@@ -40,43 +41,65 @@ const Chart = ({ weatherData = { hour: [] } }) => {
       "23:00",
     ].includes(time);
   });
+  const { typeTemp, typeWind, typePressure, typePrecip, typeVisibility } =
+    useSelector((state) => state.weather);
 
   const chartData = [
     ...filteredHours.map((hour) => ({
       date: hour.time.slice(11, 16),
       desktop:
         typeWeather === "temp"
-          ? hour.temp_c
+          ? typeTemp === "C"
+            ? hour.temp_c
+            : hour.temp_f
           : typeWeather === "tempPrec"
-          ? hour.heatindex_c
+          ? typeTemp === "C"
+            ? hour.heatindex_c
+            : hour.heatindex_f
           : typeWeather === "chance"
           ? hour.chance_of_rain
           : typeWeather === "precip"
-          ? hour.precip_mm
+          ? typePrecip === "In"
+            ? hour.precip_in
+            : hour.precip_mm
           : typeWeather === "wind"
-          ? hour.wind_mph
+          ? typeWind === "Kph"
+            ? hour.wind_kph
+            : hour.wind_mph
           : typeWeather === "vis"
-          ? hour.vis_miles
+          ? typeVisibility === "Km"
+            ? hour.vis_km
+            : hour.vis_miles
           : typeWeather === "hum"
           ? hour.humidity
           : typeWeather === "pressure"
-          ? hour.pressure_in
+          ? typePressure === "Mb"
+            ? hour.pressure_mb
+            : hour.pressure_in
           : hour.temp_f,
       mobile:
         typeWeather === "temp"
-          ? hour.feelslike_c
+          ? typeTemp === "C"
+            ? hour.feelslike_c
+            : hour.feelslike_f
           : typeWeather === "tempPrec"
-          ? hour.windchill_c
+          ? typeTemp === "C"
+            ? hour.windchill_c
+            : hour.windchill_f
           : typeWeather === "chance"
           ? hour.chance_of_snow
           : typeWeather === "precip"
           ? hour.snow_cm
           : typeWeather === "wind"
-          ? hour.gust_mph
+          ? typeWind === "Kph"
+            ? hour.gust_kph
+            : hour.gust_mph
           : typeWeather === "vis"
           ? hour.cloud
           : typeWeather === "hum"
-          ? hour.dewpoint_c
+          ? typeTemp === "C"
+            ? hour.dewpoint_c
+            : hour.dewpoint_f
           : typeWeather === "pressure"
           ? hour.uv
           : hour.temp_c,
@@ -90,43 +113,67 @@ const Chart = ({ weatherData = { hour: [] } }) => {
     desktop: {
       label:
         typeWeather === "temp"
-          ? "Temp in °C"
+          ? typeTemp === "C"
+            ? "Temp in °C"
+            : "Temp in °F"
           : typeWeather === "tempPrec"
-          ? "Heat index in °C"
+          ? typeTemp === "C"
+            ? "Heat index in °C"
+            : "Heat index in °F"
           : typeWeather === "chance"
           ? "Chance of rain"
           : typeWeather === "precip"
-          ? "Precip in mm"
+          ? typePrecip === "In"
+            ? "Precip in in"
+            : "Precip in mm"
           : typeWeather === "wind"
-          ? "Wind in mph"
+          ? typeWind === "Kph"
+            ? "Wind in kph"
+            : "Wind in mph"
           : typeWeather === "vis"
-          ? "Vis in miles"
+          ? typeVisibility === "Km"
+            ? "Vis in km"
+            : "Vis in miles"
           : typeWeather === "hum"
           ? "Humidity in %"
           : typeWeather === "pressure"
-          ? "Pressure in in"
-          : "Temp in °C",
+          ? typePressure === "Mb"
+            ? "Pressure in mb"
+            : "Pressure in in"
+          : typeTemp === "C"
+          ? "Temp in °C"
+          : "Temp in °F",
       color: "hsl(var(--chart-1))",
     },
     mobile: {
       label:
         typeWeather === "temp"
-          ? "Feels like in °C"
+          ? typeTemp === "C"
+            ? "Feels like in °C"
+            : "Feels like in °F"
           : typeWeather === "tempPrec"
-          ? "Wind chill in °C"
+          ? typeTemp === "C"
+            ? "Wind chill in °C"
+            : "Wind chill in °F"
           : typeWeather === "chance"
           ? "Chance of snow"
           : typeWeather === "precip"
           ? "Snow in cm"
           : typeWeather === "wind"
-          ? "Gust in mph"
+          ? typeWind === "Kph"
+            ? "Gust in kph"
+            : "Gust in mph"
           : typeWeather === "vis"
           ? "Cloud in %"
           : typeWeather === "hum"
-          ? "Dew point in °C"
+          ? typeTemp === "C"
+            ? "Dew point in °C"
+            : "Dew point in °F"
           : typeWeather === "pressure"
           ? "UV"
-          : "Feels like in °C",
+          : typeTemp === "C"
+          ? "Feels like in °C"
+          : "Feels like in °F",
       color: "hsl(var(--chart-2))",
     },
   };
@@ -181,7 +228,7 @@ const Chart = ({ weatherData = { hour: [] } }) => {
               Pressure & UV
             </SelectItem>
             <SelectItem value="chance" className="rounded-lg">
-              Chance of rain or snow
+              Chance of Rain & Snow
             </SelectItem>
           </SelectContent>
         </Select>

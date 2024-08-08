@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
 function WeatherCart({ day, date }) {
   const formatDate = (dateString) => {
@@ -58,6 +59,8 @@ function WeatherCart({ day, date }) {
     } ${day}${suffix(day)}`;
   };
 
+  const { typeTemp } = useSelector((state) => state.weather);
+
   return (
     <>
       <div className="weather text-white flex justify-center items-center flex-col gap-2">
@@ -77,13 +80,21 @@ function WeatherCart({ day, date }) {
         </div>
         <div className="temp text-base font-semibold flex items-center justify-center gap-2">
           <span>
-            {date === "hourly" ? day?.temp_c : day?.day?.maxtemp_c} C°
+            {date === "hourly"
+              ? typeTemp === "C"
+                ? day?.temp_c + " C°"
+                : day?.temp_f + " F°"
+              : typeTemp === "C"
+              ? day?.day?.maxtemp_c + " C°"
+              : day?.day?.maxtemp_f + " F°"}
           </span>
-          <span
-            className={`text-blue-500 ${date === "hourly" ? "hidden" : ""}`}
-          >
-            {date === "hourly" ? "" : day?.day?.mintemp_c} C°
-          </span>
+          {date === "hourly" ? null : (
+            <span
+              className={`text-blue-500`}
+            >
+              {typeTemp === "C" ? day?.day?.mintemp_c + " C°" : day?.day?.mintemp_f + " F°"}
+            </span>
+          )}
         </div>
         <div className="desc text-sm font-medium text-center">
           {date === "hourly" ? day?.condition?.text : day?.day?.condition?.text}

@@ -38,6 +38,9 @@ function Weather() {
     second: "numeric",
     hour12: true,
   });
+
+  const { typeTemp, typeWind, typePrecip } =
+    useSelector((state) => state.weather);
   return (
     <div
       className={`${styles.weather} flex flex-col gap-4 justify-center items-center md:flex-row md:justify-around w-full rounded-lg text-white px-16 py-4`}
@@ -58,10 +61,16 @@ function Weather() {
             {weather?.location?.name}, {weather?.location?.country}
           </div>
         </div>
-        <div className="text-5xl font-bold">{weather?.current?.temp_c} °C</div>
+        <div className="text-5xl font-bold">
+          {typeTemp === "C"
+            ? weather?.current?.temp_c + " °C"
+            : weather?.current?.temp_f + " °F"}
+        </div>
         <div className="text-base font-semibold flex items-center justify-center gap-2">
           <span className="text-orange-400 font-bold text-3xl">
-            {weather?.current?.feelslike_c} °C
+            {typeTemp === "C"
+              ? weather?.current?.feelslike_c + " °C"
+              : weather?.current?.feelslike_f + " °F"}
           </span>
         </div>
         <div className="text-base font-semibold flex items-center justify-center gap-2">
@@ -85,7 +94,7 @@ function Weather() {
           <div className="text flex flex-col gap-1">
             <h4 className="text-sm font-semibold">Precipition</h4>
             <p className="text-3xl font-bold">
-              {weather?.current?.precip_in} %
+              {typePrecip === "Mm" ? weather?.current?.precip_mm + " Mm" : weather?.current?.precip_in + " In"}
             </p>
           </div>
         </div>
@@ -96,7 +105,7 @@ function Weather() {
           <div className="text flex flex-col gap-1">
             <h4 className="text-sm font-semibold">Wind</h4>
             <p className="text-3xl font-bold">
-              {weather?.current?.wind_kph} Km
+              {typeWind === "Kph" ? weather?.current?.wind_kph + " Kph" : weather?.current?.wind_mph + " Mph"}
             </p>
           </div>
         </div>
