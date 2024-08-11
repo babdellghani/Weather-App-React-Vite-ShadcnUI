@@ -35,7 +35,7 @@ function SearchBar({ geoLocation, resetCurrentLocation }) {
       return;
     }
     fetch(
-      `http://api.weatherapi.com/v1/search.json?key=${WEATHER_API_KEY}&q=${searchValue}`
+      `https://api.weatherapi.com/v1/search.json?key=${WEATHER_API_KEY}&q=${searchValue}`
     )
       .then((response) => response.json())
       .then((data) =>
