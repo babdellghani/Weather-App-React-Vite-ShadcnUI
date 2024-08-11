@@ -56,7 +56,7 @@ function SearchBar({ geoLocation, resetCurrentLocation }) {
   const handleAutocomplete = useCallback(
     (lat, lon) => {
       fetch(
-        `http://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API_KEY}&q=${lat},${lon}&days=10`
+        `https://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API_KEY}&q=${lat},${lon}&days=10`
       )
         .then((response) => response.json())
         .then((data) => {
