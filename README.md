@@ -10,7 +10,7 @@ This project is a weather application built with React and Vite, utilizing the S
 
 ## Live Preview
 
-Check out the live demo of the Weather App: [Weather App Demo](weather-app-abdelghani.vercel.app/)
+Check out the live demo of the Weather App: [Weather App Demo](https://weather-app-abdelghani.vercel.app/)
 
 ## Features
 
