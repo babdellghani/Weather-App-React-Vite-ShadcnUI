@@ -19,59 +19,70 @@ import styles from "./SearchBar.module.scss";
 import { useDispatch } from "react-redux";
 import { setData } from "@/features/weather/WeatherSlice";
 import PropTypes from "prop-types";
+import { useGetWeatherLocationQuery, useGetWeatherSearchQuery } from "@/app/services/api";
 
 function SearchBar({ geoLocation, resetCurrentLocation }) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [items, setItems] = useState([]);
+  const [selectedItem, setSelectedItem] = useState({});
   const dispatch = useDispatch();
 
-  const WEATHER_API_KEY = import.meta.env.VITE_APP_API_KEY;
+  const { data: dataSearch, isLoading: isLoadingSearch } = useGetWeatherSearchQuery(searchValue, {
+    skip: !searchValue || searchValue.trim().length < 3,
+  });
+  const { data: dataLocation, isLoading } = useGetWeatherLocationQuery(
+    { lat: selectedItem.lat, lon: selectedItem.lon },
+    { skip: !selectedItem.lat || !selectedItem.lon }
+  );
 
   useEffect(() => {
-    if (!searchValue || searchValue.trim().length < 3) {
+    if (!searchValue.trim() || searchValue.trim().length < 3) {
       setItems([]);
-      return;
     }
-    fetch(
-      `https://api.weatherapi.com/v1/search.json?key=${WEATHER_API_KEY}&q=${searchValue}`
-    )
-      .then((response) => response.json())
-      .then((data) =>
-        setItems(
-          data.map((d) => {
-            const { name, region, country, lat, lon } = d;
-            return {
-              label: `${name}, ${region}`,
-              value: `${country}`,
-              lat: `${lat}`,
-              lon: `${lon}`,
-            };
-          })
-        )
-      );
-  }, [searchValue, WEATHER_API_KEY]);
+  }, [searchValue]);
+
+  useEffect(() => {
+    if (!isLoadingSearch && dataSearch) {
+        const newItems = dataSearch.map((d) => {
+          const { name, region, country, lat, lon } = d;
+          return {
+            label: `${name}, ${region}`,
+            value: `${country}`,
+            lat: `${lat}`,
+            lon: `${lon}`,
+          };
+        });
+        
+      setItems(newItems);
+    }
+  }, [dataSearch, isLoadingSearch]);
+
+  useEffect(() => {
+    if (isLoading === false && dataLocation) {
+      dispatch(setData(dataLocation));
+      setValue(`${dataLocation.location.name}, ${dataLocation.location.country}`);
+    }
+  }, [dataLocation, dispatch, isLoading]);
 
   const handleAutocomplete = useCallback(
-    (lat, lon) => {
-      fetch(
-        `https://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API_KEY}&q=${lat},${lon}&days=10`
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          dispatch(setData(data));
-          setValue(`${data.location.name}, ${data.location.country}`);
-        });
+    () => {
+      if (isLoading === false && dataLocation) {
+        dispatch(setData(dataLocation));
+      }
     },
-    [WEATHER_API_KEY, dispatch]
+    [dataLocation, dispatch, isLoading]
   );
 
   useEffect(() => {
     if (geoLocation) {
-      handleAutocomplete(geoLocation.lat, geoLocation.lon);
+      setSelectedItem({
+        lat: geoLocation.lat,
+        lon: geoLocation.lon,
+      });
     }
-  }, [geoLocation, handleAutocomplete]);
+  }, [geoLocation]);
 
   return (
     <>
@@ -103,7 +114,11 @@ function SearchBar({ geoLocation, resetCurrentLocation }) {
                     onSelect={(currentValue) => {
                       setValue(currentValue === value ? "" : currentValue);
                       setOpen(false);
-                      handleAutocomplete(item.lat, item.lon);
+                      setSelectedItem({
+                        lat: item.lat,
+                        lon: item.lon,
+                      });
+                      handleAutocomplete();
                       resetCurrentLocation();
                     }}
                   >

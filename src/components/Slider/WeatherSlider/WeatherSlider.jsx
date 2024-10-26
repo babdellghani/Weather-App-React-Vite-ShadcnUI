@@ -22,7 +22,7 @@ function WeatherSlider() {
     <div className="w-full pb-10 px-4 flex flex-col justify-center items-center">
       <Carousel
         className="w-full flex flex-col justify-center items-center gap-4"
-        opts={{ align: "start", loop: true }}
+        opts={{ align: "start"}}
       >
         <div className="slider w-full text-white flex justify-between items-center gap-4">
           <div className="group-buttons flex justify-center items-center">
@@ -52,20 +52,21 @@ function WeatherSlider() {
             <CarouselNext className="text-black static translate-y-0 translate-x-0" />
           </div>
         </div>
-        <div className="w-full flex justify-around items-center gap-4">
+        <div className="w-full flex justify-between items-center gap-4">
           {date === "daily" && (
+            <div className="w-full">
             <CarouselContent>
               {weather?.forecast?.forecastday?.map((day, index) => {
                 return (
                   <CarouselItem
                     key={index}
-                    className="basis-3/6 md:basis-2/6 lg:basis-1/5"
+                    className="basis-3/6 md:basis-2/6"
                   >
                     <WeatherCart day={day} date={date} />
                   </CarouselItem>
                 );
               })}
-            </CarouselContent>
+            </CarouselContent></div>
           )}
 
           {date === "hourly" && (

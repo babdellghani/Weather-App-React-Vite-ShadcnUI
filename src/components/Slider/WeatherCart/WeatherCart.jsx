@@ -64,7 +64,7 @@ function WeatherCart({ day, date }) {
   return (
     <>
       <div className="weather text-white flex justify-center items-center flex-col gap-2">
-        <div className="day text-sm font-medium">
+        <div className="day text-sm text-center font-medium">
           {date === "hourly" ? formatDate(day?.time) : formatDate(day?.date)}
         </div>
         <div className="icon">
@@ -79,7 +79,7 @@ function WeatherCart({ day, date }) {
           />
         </div>
         <div className="temp text-base font-semibold flex items-center justify-center gap-2">
-          <span>
+          <span className={`text-nowrap`}>
             {date === "hourly"
               ? typeTemp === "C"
                 ? day?.temp_c + " C°"
@@ -90,7 +90,7 @@ function WeatherCart({ day, date }) {
           </span>
           {date === "hourly" ? null : (
             <span
-              className={`text-blue-500`}
+              className={`text-blue-500 text-nowrap`}
             >
               {typeTemp === "C" ? day?.day?.mintemp_c + " C°" : day?.day?.mintemp_f + " F°"}
             </span>
