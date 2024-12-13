@@ -90,6 +90,7 @@ Weather-App-React-Vite-ShadcnUI/
 ## Technologies Used
 
 - React
+- Redux Toolkit Query
 - Vite
 - ShadcnUI
 - Tailwind CSS
